@@ -2,14 +2,23 @@
 
 ## 3.1 
 Implement the ID Fourier transform for yourself and study its output for some sample digital functions. 
-![image](./img/) 
+
+![image](./img/main1.png) 
 
 skip
 
 ## 3.2 
 Many very efficient implementations of the Fourier transform can be freely found: seek and download one if you do not already have one to hand. Run it on a range of deliberately simple images and study its output. Given the transform of an image, can you guess some features of the original?
 
-skip
+Full Code : ```Main2.py```
+
+Output : 
+
+![image](./img/main2_v1.png) 
+
+![image](./img/main2_v2.png) 
+
+![image](./img/main2_v3.png) 
 
 ## 3.3 
 Why might high frequencies of an image function be of interest? Why would the Fourier transform be of use in their analysis? 
@@ -165,7 +174,15 @@ Dalam pemrosesan gambar (konvolusi kernel 3×3 pada gambar 1000×1000), pengguna
 ## 3.5 
 Employing the two-dimensional Fourier transform, develop a program for high-pass, low-pass, and band-pass image filtering. 
 
-skip
+Full Code : ```Main3.py```
+
+Output :
+
+![image](./img/main3.png) 
+
+![image](./img/main3_v2.png) 
+
+![image](./img/main3_v3.png) 
 
 ## 3.6 
 Explain the aliasing effect in terms of Fourier frequency overlaps. 
@@ -240,29 +257,12 @@ Aliasing terjadi ketika **sinyal frekuensi tinggi "menyamar" sebagai sinyal frek
 ---
 
 6. Contoh dalam Pemrosesan Gambar
-```python
-import numpy as np
-import matplotlib.pyplot as plt
 
-# Contoh aliasing pada sinusoidal
-fs = 100  # Frekuensi sampling
-t = np.linspace(0, 1, fs, endpoint=False)
-f_high = 70  # Frekuensi di atas Nyquist (50 Hz)
-f_low = 30   # Frekuensi hasil aliasing
-
-signal_high = np.sin(2 * np.pi * f_high * t)
-signal_low = np.sin(2 * np.pi * f_low * t)
-
-plt.figure(figsize=(10, 4))
-plt.plot(t, signal_high, 'r', label=f'{f_high} Hz (Asli)')
-plt.plot(t, signal_low, 'b--', label=f'{f_low} Hz (Aliasing)')
-plt.title(f'Aliasing: {f_high} Hz → {f_low} Hz saat f_s = {fs} Hz')
-plt.legend()
-plt.show()
-```
+Full Code : ```Main6.py```
 
 Output :  
 
+![image](./img/main6.png) 
 
 ---
 
@@ -282,13 +282,12 @@ Locate a package that finds the eigen-system of a matrix (there are many freely 
 
 Answer
 
-# Analisis Sistem Eigen dan Sensitivitas terhadap Perturbasi
+Analisis Sistem Eigen dan Sensitivitas terhadap Perturbasi
 
 Berikut adalah eksplorasi menggunakan Python dengan paket NumPy dan SciPy untuk menganalisis sistem eigen dan sensitivitasnya terhadap berbagai jenis perturbasi.
 
-## Paket yang Digunakan
 
-Paket utama yang akan kita gunakan adalah:
+Library yang akan digunakan:
 - **NumPy**: Untuk operasi matriks dasar
 - **SciPy**: Untuk perhitungan sistem eigen yang lebih lengkap
 - **Matplotlib**: Untuk visualisasi
@@ -299,93 +298,56 @@ from scipy.linalg import eig
 import matplotlib.pyplot as plt
 ```
 
-## Fungsi untuk Analisis Eigen
+Full Code : ```Main4.py```
 
-```python
-def analyze_eigensystem(A, perturbations, perturbation_type='matrix'):
-    """
-    Menganalisis perubahan nilai eigen terhadap berbagai perturbasi
-    
-    Parameters:
-        A: Matriks asli
-        perturbations: Daftar besar perturbasi
-        perturbation_type: Jenis perturbasi ('matrix', 'column', 'element')
-    """
-    # Hitung nilai eigen asli
-    eigvals_orig, eigvecs_orig = eig(A)
-    eigvals_orig = np.sort(eigvals_orig)
-    
-    plt.figure(figsize=(12, 6))
-    
-    # Analisis untuk setiap perturbasi
-    for eps in perturbations:
-        A_perturbed = A.copy()
-        
-        # Terapkan perturbasi sesuai jenis
-        if perturbation_type == 'matrix':
-            A_perturbed += eps * np.random.randn(*A.shape)
-        elif perturbation_type == 'column':
-            col = np.random.randint(A.shape[1])
-            A_perturbed[:, col] += eps * np.random.randn(A.shape[0])
-        elif perturbation_type == 'element':
-            i, j = np.random.randint(A.shape[0]), np.random.randint(A.shape[1])
-            A_perturbed[i,j] += eps
-        
-        # Hitung nilai eigen terperturbasi
-        eigvals_pert, _ = eig(A_perturbed)
-        eigvals_pert = np.sort(eigvals_pert)
-        
-        # Plot perubahan nilai eigen
-        plt.plot(eigvals_orig, 'bo', label='Original' if eps == perturbations[0] else "")
-        plt.plot(eigvals_pert, 'rx', alpha=0.5, label=f'ε={eps:.1e}' if eps == perturbations[-1] else "")
-    
-    plt.title(f'Perubahan Nilai Eigen - Perturbasi {perturbation_type}')
-    plt.xlabel('Indeks Nilai Eigen')
-    plt.ylabel('Nilai Eigen')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-```
+Output : 
 
-## Contoh Matriks untuk Dianalisis
+![image](./img/main4.png) 
 
-### 1. Matriks Simetris
+![image](./img/main4_v2.png) 
+
+![image](./img/main4_v3.png) 
+
+
+Contoh Matriks untuk Dianalisis
+
+1. Matriks Simetris
 ```python
 A_sym = np.array([[2, -1, 0],
                   [-1, 2, -1], 
                   [0, -1, 2]])
 ```
 
-### 2. Matriks Random
+2. Matriks Random
 ```python
 A_rand = np.random.randn(3, 3)
 ```
 
-### 3. Matriks Hilbert (Ill-conditioned)
+3. Matriks Hilbert (Ill-conditioned)
 ```python
 from scipy.linalg import hilbert
 A_hilbert = hilbert(3)
 ```
 
-## Eksperimen Perturbasi
+Eksperimen Perturbasi
 
-### 1. Perturbasi Seluruh Matriks
+1. Perturbasi Seluruh Matriks
 ```python
 perturbations = [1e-6, 1e-4, 1e-2]
 analyze_eigensystem(A_sym, perturbations, 'matrix')
 ```
 
-### 2. Perturbasi Satu Kolom
+2. Perturbasi Satu Kolom
 ```python
 analyze_eigensystem(A_rand, perturbations, 'column')
 ```
 
-### 3. Perturbasi Satu Elemen
+3. Perturbasi Satu Elemen
 ```python
 analyze_eigensystem(A_hilbert, [1e-10, 1e-8, 1e-6], 'element')
 ```
 
-## Hasil dan Analisis
+Hasil dan Analisis
 
 1. **Matriks Simetris**:
    - Nilai eigen relatif stabil terhadap perturbasi kecil
@@ -399,35 +361,8 @@ analyze_eigensystem(A_hilbert, [1e-10, 1e-8, 1e-6], 'element')
    - Sangat sensitif bahkan terhadap perturbasi sangat kecil (10⁻¹⁰)
    - Nilai eigen terbesar paling stabil, yang terkecil paling sensitif
 
-## Visualisasi Tambahan: Kondisi Matriks
 
-```python
-def plot_condition_number(matrix_list, titles):
-    plt.figure(figsize=(10, 5))
-    for A, title in zip(matrix_list, titles):
-        cond_numbers = []
-        epsilons = np.logspace(-15, -1, 50)
-        
-        for eps in epsilons:
-            A_perturbed = A + eps * np.random.randn(*A.shape)
-            _, s, _ = np.linalg.svd(A_perturbed)
-            cond_numbers.append(s[0]/s[-1])
-        
-        plt.loglog(epsilons, cond_numbers, 'o-', label=title)
-    
-    plt.xlabel('Besaran Perturbasi (ε)')
-    plt.ylabel('Condition Number')
-    plt.title('Sensitivitas Condition Number terhadap Perturbasi')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-matrices = [A_sym, A_rand, A_hilbert]
-titles = ['Matriks Simetris', 'Matriks Random', 'Matriks Hilbert']
-plot_condition_number(matrices, titles)
-```
-
-## Kesimpulan
+Kesimpulan
 
 1. Sensitivitas nilai eigen terhadap perturbasi bergantung pada:
    - **Struktur matriks** (simetris lebih stabil)
@@ -447,12 +382,18 @@ Eksperimen ini menunjukkan pentingnya memahami sensitivitas sistem eigen dalam a
 ## 3.8 
 Locate an implementation of the Radon transform and run it on some images with pronounced straight lines (such as Figure 3.26). Extract the directional maxima it suggests and compare them to the lines in the original. 
 
+Full Code : ```Main5.py```
+
+Output : 
+
+![image](./img/main5_v1.png) 
+
+![image](./img/main5_v2.png) 
+
 ## 3.9 
 Better quality digital cameras permit manual setting of focus, aperture and exposure time: if you can, experiment with these to see the effects of depth of focus on image quality. 
 
 Answer
-
-
 
 Rencana Eksperimen: Analisis Depth of Focus
 
@@ -529,23 +470,7 @@ Eksperimen 3: Exposure Time dan Motion Blur
 3. Analisis Kuantitatif
 Gunakan Python untuk mengukur ketajaman gambar:
 
-```python
-import cv2
-import numpy as np
-
-def ukur_ketajaman(path_gambar):
-    img = cv2.imread(path_gambar, cv2.IMREAD_GRAYSCALE)
-    laplacian = cv2.Laplacian(img, cv2.CV_64F).var()
-    return laplacian  # Nilai tinggi = gambar tajam
-
-# Contoh penggunaan:
-ketajaman = {
-    'f2.8': ukur_ketajaman('f2.8.jpg'),
-    'f8': ukur_ketajaman('f8.jpg'),
-    'f16': ukur_ketajaman('f16.jpg')
-}
-print(ketajaman)
-```
+Full Code : ```Main8.py```
 
 ---
 
@@ -573,9 +498,75 @@ print(ketajaman)
 ## 3.10 
 Make yourself familiar with solved problems and Matlab implementations of selected algorithms provided in the corresponding chapter of the Matlab Companion to this text [Svoboda et al., 2008). The Matlab Companion homepage http://visionbook.felk.cvut.cz offers images used in the problems, and well-commented Matlab code is provided for educational purposes. 
 
-skip
+Use Matlab || Octave
+
+
+Full Code Main 7 : 
+```matlab
+img = imread('image.jpg');
+gray = rgb2gray(img);
+edges = edge(gray, 'canny');
+
+[H, T, R] = hough(edges);
+peaks = houghpeaks(H, 10);
+lines = houghlines(edges, T, R, peaks);
+
+imshow(img), hold on;
+for k = 1:length(lines)
+   xy = [lines(k).point1; lines(k).point2];
+   plot(xy(:,1), xy(:,2), 'LineWidth', 2, 'Color', 'green');
+end
+```
+Output : 
+
+![image](./img/main7.png) 
 
 ## 3.11 
 Use the Matlab Companion (Svoboda et al., 2008] to develop solutions to additional exercises and practical problems provided there. Implement your solutions using Matlab or other suitable programming languages.
 
-skip
+Use Matlab || Octave
+
+Full Code Main 8 : 
+```matlab
+img = imread('/home/oo/download.png');
+gray = rgb2gray(img);
+edges = edge(gray, 'canny');
+[H, theta, rho] = hough(edges);
+peaks = houghpeaks(H, 10, 'threshold', ceil(0.3 * max(H(:))));
+lines = houghlines(edges, theta, rho, peaks);
+imshow(img), hold on;
+for k = 1:length(lines)
+   xy = [lines(k).point1; lines(k).point2];
+   plot(xy(:,1), xy(:,2), 'LineWidth', 2, 'Color', 'green');
+end
+```
+
+Atau bisa menggunakan 
+
+```python
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+img = cv2.imread(r'E:\Back Up E\Tugas Kuliah Semester 4\PCD\Tugas 2\images.jpg')
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+edges = cv2.Canny(gray, 50, 150)
+
+lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold=100, minLineLength=50, maxLineGap=10)
+
+for line in lines:
+    x1, y1, x2, y2 = line[0]
+    cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.title('Detected Lines')
+plt.axis('off')
+plt.show()
+```
+
+
+Output : 
+
+![image](./img/main8.png) 
+
+![image](./img/main8_v2.png) 

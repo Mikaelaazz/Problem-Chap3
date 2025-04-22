@@ -19,7 +19,7 @@ def analyze_eigensystem(A, perturbations, perturbation_type='matrix'):
     
     # Analisis untuk setiap perturbasi
     for eps in perturbations:
-        A_perturbed = A.copy()
+        A_perturbed = A.copy().astype(float) 
         
         # Terapkan perturbasi sesuai jenis
         if perturbation_type == 'matrix':
@@ -45,3 +45,16 @@ def analyze_eigensystem(A, perturbations, perturbation_type='matrix'):
     plt.legend()
     plt.grid(True)
     plt.show()
+
+if __name__ == "__main__":
+    # Matriks contoh
+    A = np.array([[2, -1, 0],
+                  [-1, 2, -1],
+                  [0, -1, 2]])
+    
+    # Nilai perturbasi
+    perturbations = [1e-6, 1e-4, 1e-2]
+    
+    # Jalanalisis untuk semua jenis perturbasi
+    for p_type in ['matrix', 'column', 'element']:
+        analyze_eigensystem(A, perturbations, p_type)
