@@ -3,9 +3,10 @@
 ## 3.1 
 Implement the ID Fourier transform for yourself and study its output for some sample digital functions. 
 
+Full Code : ```Main.py```
+
 ![image](./img/main1.png) 
 
-skip
 
 ## 3.2 
 Many very efficient implementations of the Fourier transform can be freely found: seek and download one if you do not already have one to hand. Run it on a range of deliberately simple images and study its output. Given the transform of an image, can you guess some features of the original?
@@ -566,7 +567,7 @@ plt.show()
 
 
 Output : 
-
+- Using Matlab
 ![image](./img/main8.png) 
-
+- Using Python
 ![image](./img/main8_v2.png) 
